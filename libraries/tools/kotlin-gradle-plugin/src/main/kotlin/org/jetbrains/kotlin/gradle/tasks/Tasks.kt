@@ -95,8 +95,6 @@ abstract class AbstractKotlinCompile<T : CommonCompilerArguments>() : AbstractKo
             logger.kotlinDebug { "Set $this.incremental=$value" }
         }
 
-    abstract protected fun createCompilerArgs(): T
-
     @get:Internal
     internal val pluginOptions = CompilerPluginOptions()
 
@@ -238,6 +236,11 @@ abstract class AbstractKotlinCompile<T : CommonCompilerArguments>() : AbstractKo
         compilerArgs.pluginClasspaths = pluginClasspath.toTypedArray()
         compilerArgs.pluginOptions = pluginOptions.arguments.toTypedArray()
     }
+
+    protected fun hasFilesInTaskBuildDirectory(): Boolean {
+        val taskBuildDir = taskBuildDirectory
+        return taskBuildDir.walk().any { it != taskBuildDir && it.isFile }
+    }
 }
 
 open class KotlinCompile : AbstractKotlinCompile<K2JVMCompilerArguments>(), KotlinJvmCompile {
@@ -340,7 +343,8 @@ open class KotlinCompile : AbstractKotlinCompile<K2JVMCompilerArguments>(), Kotl
         val reporter = GradleICReporter(project.rootProject.projectDir)
 
         val environment = when {
-            !incremental -> GradleCompilerEnvironment(computedCompilerClasspath, messageCollector, outputItemCollector, args)
+            !incremental || !hasFilesInTaskBuildDirectory() ->
+                GradleCompilerEnvironment(computedCompilerClasspath, messageCollector, outputItemCollector, args)
             else -> {
                 logger.info(USING_INCREMENTAL_COMPILATION_MESSAGE)
                 val friendTask = friendTaskName?.let { project.tasks.findByName(it) as? KotlinCompile }
@@ -503,7 +507,7 @@ open class Kotlin2JsCompile() : AbstractKotlinCompile<K2JSCompilerArguments>(), 
         val reporter = GradleICReporter(project.rootProject.projectDir)
 
         val environment = when {
-            incremental -> {
+            incremental && hasFilesInTaskBuildDirectory() -> {
                 logger.warn(USING_EXPERIMENTAL_JS_INCREMENTAL_COMPILATION_MESSAGE)
                 GradleIncrementalCompilerEnvironment(
                         computedCompilerClasspath, changedFiles, reporter, taskBuildDirectory,
