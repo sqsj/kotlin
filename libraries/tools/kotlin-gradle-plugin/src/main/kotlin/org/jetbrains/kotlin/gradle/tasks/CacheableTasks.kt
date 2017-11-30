@@ -32,7 +32,15 @@ open class CacheableKotlin2JsCompile : Kotlin2JsCompile()
 internal open class CacheableKotlinCompileCommon : KotlinCompileCommon()
 
 @CacheableTask
-open class CacheableKaptTask : KaptTask()
+open class CacheableKaptTask : KaptTask() {
+    init {
+        if (shouldEnableGradleCache(project)) {
+            val reason = "Caching is disabled by default for kapt because of arbitrary behavior of external " +
+                         "annotation processors. You can enable it by adding 'kapt.useBuildCache = true' to the build script."
+            outputs.doNotCacheIf(reason) { !useBuildCache }
+        }
+    }
+}
 
 @CacheableTask
 open class CacheableKaptGenerateStubsTask : KaptGenerateStubsTask()

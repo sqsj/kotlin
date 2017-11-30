@@ -311,6 +311,8 @@ class Kapt3KotlinGradleSubplugin : KotlinGradleSubplugin<KotlinCompile> {
 
         kaptTask.kaptClasspath = kaptClasspath
 
+        kaptTask.useBuildCache = kaptExtension.useBuildCache
+
         buildAndAddOptionsTo(kaptTask.pluginOptions, aptMode = "apt")
 
         return kaptTask
