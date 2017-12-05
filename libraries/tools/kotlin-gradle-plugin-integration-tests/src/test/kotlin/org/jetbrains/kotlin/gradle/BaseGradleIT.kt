@@ -147,7 +147,8 @@ abstract class BaseGradleIT {
             val freeCommandLineArgs: List<String> = emptyList(),
             val kotlinVersion: String = KOTLIN_VERSION,
             val kotlinDaemonDebugPort: Int? = null,
-            val usePreciseJavaTracking: Boolean? = null
+            val usePreciseJavaTracking: Boolean? = null,
+            val withBuildCache: Boolean = false
     )
 
     open inner class Project(
@@ -453,6 +454,9 @@ abstract class BaseGradleIT {
                 }
                 System.getProperty("maven.repo.local")?.let {
                     add("-Dmaven.repo.local=$it") // TODO: proper escaping
+                }
+                if (options.withBuildCache) {
+                    add("--build-cache")
                 }
                 addAll(options.freeCommandLineArgs)
             }
