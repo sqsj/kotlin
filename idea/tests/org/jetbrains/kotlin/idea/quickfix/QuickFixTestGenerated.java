@@ -2259,6 +2259,12 @@ public class QuickFixTestGenerated extends AbstractQuickFixTest {
                     doTest(fileName);
                 }
 
+                @TestMetadata("deprecatedClassifier.kt")
+                public void testDeprecatedClassifier() throws Exception {
+                    String fileName = KotlinTestUtils.navigationMetadata("idea/testData/quickfix/createFromUsage/createClass/importDirective/deprecatedClassifier.kt");
+                    doTest(fileName);
+                }
+
                 @TestMetadata("enumEntryInEnum.kt")
                 public void testEnumEntryInEnum() throws Exception {
                     String fileName = KotlinTestUtils.navigationMetadata("idea/testData/quickfix/createFromUsage/createClass/importDirective/enumEntryInEnum.kt");

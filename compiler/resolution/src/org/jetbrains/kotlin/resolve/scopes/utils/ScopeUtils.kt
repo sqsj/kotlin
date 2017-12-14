@@ -78,6 +78,41 @@ fun HierarchicalScope.collectDescriptorsFiltered(
 fun HierarchicalScope.findClassifier(name: Name, location: LookupLocation): ClassifierDescriptor?
         = findFirstFromMeAndParent { it.getContributedClassifier(name, location) }
 
+fun HierarchicalScope.findClassifierDiscriminateDeprecated(name: Name, location: LookupLocation): Pair<ClassifierDescriptor?, Boolean> {
+    val (classifier, isDeprecated) = findClassifierWithDeprecationStatus(name, location)
+
+    return when {
+        classifier == null -> null to false
+
+        !isDeprecated -> classifier to false
+
+        else -> {
+            // slow-path: we've found classifier which is deprecated due to ProhibitVisibilityOfNestedClassifiersFromSupertypesOfCompanion
+            // Now, before reporting deprecation, we have to re-check that we don't have second, non-deprecated, visibility-path
+            val allClassifiersWithDeprecations = collectAllWithDeprecationStatus(name, location)
+            val allAreDeprecated = allClassifiersWithDeprecations.all { (_, isDeprecated) -> isDeprecated }
+            classifier to allAreDeprecated
+        }
+    }
+}
+
+fun HierarchicalScope.findClassifierWithDeprecationStatus(name: Name, location: LookupLocation): Pair<ClassifierDescriptor?, Boolean> {
+    val pair = findFirstFromMeAndParent { it.getContributedClassifierWithDeprecationStatus(name, location) }
+    return pair ?: null to false
+}
+
+fun HierarchicalScope.getContributedClassifierWithDeprecationStatus(name: Name, location: LookupLocation): Pair<ClassifierDescriptor, Boolean>? {
+    return if (this is LexicalChainedScope) {
+        getContributedClassifierWithDeprecationStatus(name, location)
+    } else {
+        getContributedClassifier(name, location)?.let { it to false }
+    }
+}
+
+fun HierarchicalScope.collectAllWithDeprecationStatus(name: Name, location: LookupLocation): Collection<Pair<ClassifierDescriptor, Boolean>> {
+    return collectAllFromMeAndParent { listOfNotNull(it.getContributedClassifierWithDeprecationStatus(name, location)) }
+}
+
 fun HierarchicalScope.findPackage(name: Name): PackageViewDescriptor?
         = findFirstFromImportingScopes { it.getContributedPackage(name) }
 

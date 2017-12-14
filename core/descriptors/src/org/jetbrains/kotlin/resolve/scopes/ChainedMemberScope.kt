@@ -25,9 +25,10 @@ import org.jetbrains.kotlin.util.collectionUtils.getFirstClassifierDiscriminateH
 import org.jetbrains.kotlin.util.collectionUtils.getFromAllScopes
 import org.jetbrains.kotlin.utils.Printer
 
-class ChainedMemberScope(
+class ChainedMemberScope @JvmOverloads constructor(
         internal val debugName: String,
-        private val scopes: List<MemberScope>
+        private val scopes: List<MemberScope>,
+        val isDeprecated: Boolean = false
 ) : MemberScope {
     override fun getContributedClassifier(name: Name, location: LookupLocation): ClassifierDescriptor?
             = getFirstClassifierDiscriminateHeaders(scopes) { it.getContributedClassifier(name, location) }

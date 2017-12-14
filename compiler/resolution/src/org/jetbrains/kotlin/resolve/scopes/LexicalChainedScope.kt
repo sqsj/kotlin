@@ -16,6 +16,7 @@
 
 package org.jetbrains.kotlin.resolve.scopes
 
+import org.jetbrains.kotlin.descriptors.ClassifierDescriptor
 import org.jetbrains.kotlin.descriptors.DeclarationDescriptor
 import org.jetbrains.kotlin.descriptors.ReceiverParameterDescriptor
 import org.jetbrains.kotlin.incremental.components.LookupLocation
@@ -33,14 +34,45 @@ class LexicalChainedScope @JvmOverloads constructor(
         override val kind: LexicalScopeKind,
         private val memberScopes: List<MemberScope>,
         @Deprecated("This value is temporary hack for resolve -- don't use it!")
-        val isStaticScope: Boolean = false
-): LexicalScope {
+        val isStaticScope: Boolean = false,
+        val isDeprecated: Boolean = false
+) : LexicalScope {
     override val parent = parent.takeSnapshot()
 
     override fun getContributedDescriptors(kindFilter: DescriptorKindFilter, nameFilter: (Name) -> Boolean)
             = getFromAllScopes(memberScopes) { it.getContributedDescriptors() }
 
     override fun getContributedClassifier(name: Name, location: LookupLocation) = getFirstClassifierDiscriminateHeaders(memberScopes) { it.getContributedClassifier(name, location) }
+
+    fun getContributedClassifierWithDeprecationStatus(name: Name, location: LookupLocation): Pair<ClassifierDescriptor, Boolean>? {
+        // We have to carefully inspect member scopes, because it is possible that 'this'-scope is not deprecated, but some
+        // of memberScopes actually is deprecated. Example:
+        //
+        // open class Base {
+        //   companion object {
+        //     class Foo
+        //   }
+        // }
+        //
+        // class Derived : Base() {
+        //   ...
+        // }
+        //
+        // Here, when building scopes for class Derived, we create LexicalChainedScope for members of Base. This scope itself isn't
+        // deprecated, but among other scopes, it contains memberScope of nested classes from companion object -- which *is* deprecated
+        // Therefore, if we get classifier from such scope, we have to inform that it is deprecated.
+        //
+        // Of course, if 'this'-scope is deprecated, then all classifiers from it are deprecated, no matter where they come from
+        var resultingDeprecation: Boolean = isDeprecated
+
+        val resultingClassifier = getFirstClassifierDiscriminateHeaders(memberScopes) { scope ->
+            val classifier = scope.getContributedClassifier(name, location)
+            if (classifier != null) resultingDeprecation = resultingDeprecation || ((scope as? ChainedMemberScope)?.isDeprecated ?: false)
+            classifier
+        }
+
+        return resultingClassifier?.let { it to resultingDeprecation }
+    }
 
     override fun getContributedVariables(name: Name, location: LookupLocation) = getFromAllScopes(memberScopes) { it.getContributedVariables(name, location) }
 

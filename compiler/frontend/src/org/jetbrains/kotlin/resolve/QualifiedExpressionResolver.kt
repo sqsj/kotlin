@@ -34,6 +34,7 @@ import org.jetbrains.kotlin.resolve.scopes.ImportingScope
 import org.jetbrains.kotlin.resolve.scopes.LexicalScope
 import org.jetbrains.kotlin.resolve.scopes.receivers.*
 import org.jetbrains.kotlin.resolve.scopes.utils.findClassifier
+import org.jetbrains.kotlin.resolve.scopes.utils.findClassifierDiscriminateDeprecated
 import org.jetbrains.kotlin.resolve.scopes.utils.memberScopeAsImportingScope
 import org.jetbrains.kotlin.resolve.source.KotlinSourceElement
 import org.jetbrains.kotlin.types.expressions.ExpressionTypingContext
@@ -69,7 +70,13 @@ class QualifiedExpressionResolver {
         val ownerDescriptor = if (!isDebuggerContext) scope.ownerDescriptor else null
         if (userType.qualifier == null) {
             val descriptor = userType.referenceExpression?.let { expression ->
-                val classifier = scope.findClassifier(expression.getReferencedNameAsName(), KotlinLookupLocation(expression))
+                val (classifier, isDeprecated) = scope.findClassifierDiscriminateDeprecated(expression.getReferencedNameAsName(), KotlinLookupLocation(expression))
+
+                if (classifier != null && isDeprecated) {
+                    trace.report(Errors.DEPRECATED_VISIBILITY.on(expression, classifier))
+                    trace.record(BindingContext.DEPRECATED_SHORT_NAME_ACCESS, expression) // For IDE
+                }
+
                 checkNotEnumEntry(classifier, trace, expression)
                 storeResult(trace, expression, classifier, ownerDescriptor, position = QualifierPosition.TYPE, isQualifier = false)
                 classifier

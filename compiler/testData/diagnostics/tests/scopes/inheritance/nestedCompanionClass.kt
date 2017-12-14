@@ -5,14 +5,14 @@ open class A {
 }
 
 class C: A() {
-    val b: B = null!!
+    val b: <!DEPRECATED_VISIBILITY!>B<!> = null!!
 
     init {
         B()
     }
 
     object O {
-        val b: B = null!!
+        val b: <!DEPRECATED_VISIBILITY!>B<!> = null!!
 
         init {
             B()
@@ -20,7 +20,7 @@ class C: A() {
     }
 
     class K {
-        val b: B = null!!
+        val b: <!DEPRECATED_VISIBILITY!>B<!> = null!!
 
         init {
             B()
@@ -28,7 +28,7 @@ class C: A() {
     }
 
     inner class I {
-        val b: B = null!!
+        val b: <!DEPRECATED_VISIBILITY!>B<!> = null!!
 
         init {
             B()

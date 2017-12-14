@@ -14953,6 +14953,36 @@ public class DiagnosticsUsingJavacTestGenerated extends AbstractDiagnosticsUsing
                 KotlinTestUtils.assertAllTestsPresentByMetadata(this.getClass(), new File("compiler/testData/diagnostics/tests/objects"), Pattern.compile("^(.+)\\.kt$"), TargetBackend.ANY, true);
             }
 
+            @TestMetadata("classifierFromCompanionObjectNew.kt")
+            public void testClassifierFromCompanionObjectNew() throws Exception {
+                String fileName = KotlinTestUtils.navigationMetadata("compiler/testData/diagnostics/tests/objects/classifierFromCompanionObjectNew.kt");
+                doTest(fileName);
+            }
+
+            @TestMetadata("classifierFromCompanionObjectOld.kt")
+            public void testClassifierFromCompanionObjectOld() throws Exception {
+                String fileName = KotlinTestUtils.navigationMetadata("compiler/testData/diagnostics/tests/objects/classifierFromCompanionObjectOld.kt");
+                doTest(fileName);
+            }
+
+            @TestMetadata("classifierFromCompanionObjectWithQualificationNew.kt")
+            public void testClassifierFromCompanionObjectWithQualificationNew() throws Exception {
+                String fileName = KotlinTestUtils.navigationMetadata("compiler/testData/diagnostics/tests/objects/classifierFromCompanionObjectWithQualificationNew.kt");
+                doTest(fileName);
+            }
+
+            @TestMetadata("classifierFromCompanionObjectWithQualificationOld.kt")
+            public void testClassifierFromCompanionObjectWithQualificationOld() throws Exception {
+                String fileName = KotlinTestUtils.navigationMetadata("compiler/testData/diagnostics/tests/objects/classifierFromCompanionObjectWithQualificationOld.kt");
+                doTest(fileName);
+            }
+
+            @TestMetadata("classifierIsVisibleByTwoPaths.kt")
+            public void testClassifierIsVisibleByTwoPaths() throws Exception {
+                String fileName = KotlinTestUtils.navigationMetadata("compiler/testData/diagnostics/tests/objects/classifierIsVisibleByTwoPaths.kt");
+                doTest(fileName);
+            }
+
             @TestMetadata("invokeOnInnerObject.kt")
             public void testInvokeOnInnerObject() throws Exception {
                 String fileName = KotlinTestUtils.navigationMetadata("compiler/testData/diagnostics/tests/objects/invokeOnInnerObject.kt");
