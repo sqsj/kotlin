@@ -22,6 +22,7 @@ import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
+import org.jetbrains.kotlin.asJava.elements.FakeFileForLightClass
 import org.jetbrains.kotlin.psi.KtCodeFragment
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.psiUtil.createSmartPointer
@@ -42,8 +43,13 @@ abstract class KotlinQuickFixAction<out T : PsiElement>(element: T) : IntentionA
 
     override final fun invoke(project: Project, editor: Editor?, file: PsiFile) {
         val element = element ?: return
-        if (file is KtFile && FileModificationService.getInstance().prepareFileForWrite(element.containingFile)) {
-            invoke(project, editor, file)
+        val ktFile = when (file) {
+            is KtFile -> file
+            is FakeFileForLightClass -> file.navigationElement
+            else -> null
+        }
+        if (ktFile != null && FileModificationService.getInstance().prepareFileForWrite(element.containingFile)) {
+            invoke(project, editor, ktFile)
         }
     }
 
