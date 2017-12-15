@@ -36,7 +36,8 @@ class RemoveSingleExpressionStringTemplateInspection : IntentionBasedInspection<
             templateExpression.singleExpressionOrNull()?.let {
                 KotlinBuiltIns.isString(it.getType(it.analyze()))
             } ?: false
-        }
+        },
+        cacheIntention = true
 ) {
     override val problemText = "Redundant string template"
 }

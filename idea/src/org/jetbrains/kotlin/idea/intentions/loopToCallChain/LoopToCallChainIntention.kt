@@ -28,8 +28,10 @@ import org.jetbrains.kotlin.psi.KtProperty
 import org.jetbrains.kotlin.psi.psiUtil.startOffset
 
 class LoopToCallChainInspection : IntentionBasedInspection<KtForExpression>(
-        listOf(IntentionData(LoopToCallChainIntention::class), IntentionData(LoopToLazyCallChainIntention::class)),
-        problemText = "Loop can be replaced with stdlib operations"
+        listOf(IntentionData(LoopToCallChainIntention::class),
+               IntentionData(LoopToLazyCallChainIntention::class)),
+        problemText = "Loop can be replaced with stdlib operations",
+        cacheIntention = false // text changed
 )
 
 class LoopToCallChainIntention : AbstractLoopToCallChainIntention(lazy = false, text = "Replace with stdlib operations")

@@ -42,8 +42,9 @@ import org.jetbrains.kotlin.util.OperatorNameConventions
 import org.jetbrains.kotlin.util.isValidOperator
 
 class ReplaceGetOrSetInspection : IntentionBasedInspection<KtDotQualifiedExpression>(
-        ReplaceGetOrSetIntention::class, ReplaceGetOrSetInspection.additionalChecker
-
+        ReplaceGetOrSetIntention::class,
+        ReplaceGetOrSetInspection.additionalChecker,
+        cacheIntention = false // text changed
 ) {
     companion object {
         val additionalChecker = { expression: KtDotQualifiedExpression ->

@@ -25,7 +25,8 @@ import org.jetbrains.kotlin.psi.KtPrimaryConstructor
 import org.jetbrains.kotlin.psi.psiUtil.containingClass
 
 class RemoveEmptyPrimaryConstructorInspection : IntentionBasedInspection<KtPrimaryConstructor>(
-        RemoveEmptyPrimaryConstructorIntention::class
+        RemoveEmptyPrimaryConstructorIntention::class,
+        cacheIntention = true
 ), CleanupLocalInspectionTool {
     override fun problemHighlightType(element: KtPrimaryConstructor): ProblemHighlightType =
             ProblemHighlightType.LIKE_UNUSED_SYMBOL

@@ -59,7 +59,8 @@ class DestructureInspection : IntentionBasedInspection<KtDeclaration>(
             else {
                 usagesToRemove?.any { it.declarationToDrop is KtDestructuringDeclaration } ?: false
             }
-        }
+        },
+        cacheIntention = true
 )
 
 class DestructureIntention : SelfTargetingRangeIntention<KtDeclaration>(

@@ -38,7 +38,8 @@ class HasPlatformTypeInspection(
             with(inspection as HasPlatformTypeInspection) {
                 SpecifyTypeExplicitlyIntention.dangerousFlexibleTypeOrNull(element, this.publicAPIOnly, this.reportPlatformArguments) != null
             }
-        }
+        },
+        cacheIntention = true
 ) {
 
     override val problemText = "Declaration has type inferred from a platform call, which can lead to unchecked nullability issues. " +

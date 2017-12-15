@@ -33,7 +33,8 @@ import org.jetbrains.kotlin.types.typeUtil.builtIns
 import org.jetbrains.kotlin.types.typeUtil.isPrimitiveNumberType
 
 class ConvertTwoComparisonsToRangeCheckInspection : IntentionBasedInspection<KtBinaryExpression>(
-        ConvertTwoComparisonsToRangeCheckIntention::class
+        ConvertTwoComparisonsToRangeCheckIntention::class,
+        cacheIntention = true
 )
 
 class ConvertTwoComparisonsToRangeCheckIntention : SelfTargetingOffsetIndependentIntention<KtBinaryExpression>(

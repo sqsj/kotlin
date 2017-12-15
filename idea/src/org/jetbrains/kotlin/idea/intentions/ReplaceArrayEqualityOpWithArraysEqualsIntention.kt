@@ -25,8 +25,10 @@ import org.jetbrains.kotlin.psi.KtPsiFactory
 import org.jetbrains.kotlin.psi.createExpressionByPattern
 import org.jetbrains.kotlin.resolve.calls.callUtil.getResolvedCall
 
-class ReplaceArrayEqualityOpWithArraysEqualsInspection :
-        IntentionBasedInspection<KtBinaryExpression>(ReplaceArrayEqualityOpWithArraysEqualsIntention::class)
+class ReplaceArrayEqualityOpWithArraysEqualsInspection : IntentionBasedInspection<KtBinaryExpression>(
+        ReplaceArrayEqualityOpWithArraysEqualsIntention::class,
+        cacheIntention = false // text changed
+)
 
 class ReplaceArrayEqualityOpWithArraysEqualsIntention : SelfTargetingOffsetIndependentIntention<KtBinaryExpression>(
         KtBinaryExpression::class.java,

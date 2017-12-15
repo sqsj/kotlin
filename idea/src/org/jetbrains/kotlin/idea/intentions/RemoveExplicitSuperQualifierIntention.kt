@@ -35,7 +35,8 @@ import org.jetbrains.kotlin.resolve.lazy.BodyResolveMode
 import org.jetbrains.kotlin.types.ErrorUtils
 
 class RemoveExplicitSuperQualifierInspection : IntentionBasedInspection<KtSuperExpression>(
-        RemoveExplicitSuperQualifierIntention::class
+        RemoveExplicitSuperQualifierIntention::class,
+        cacheIntention = true
 ), CleanupLocalInspectionTool {
     override fun problemHighlightType(element: KtSuperExpression): ProblemHighlightType =
             ProblemHighlightType.LIKE_UNUSED_SYMBOL

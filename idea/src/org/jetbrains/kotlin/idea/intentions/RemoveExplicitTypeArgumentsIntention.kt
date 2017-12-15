@@ -42,7 +42,10 @@ import org.jetbrains.kotlin.types.KotlinType
 import org.jetbrains.kotlin.types.TypeUtils
 import org.jetbrains.kotlin.types.checker.KotlinTypeChecker
 
-class RemoveExplicitTypeArgumentsInspection : IntentionBasedInspection<KtTypeArgumentList>(RemoveExplicitTypeArgumentsIntention::class) {
+class RemoveExplicitTypeArgumentsInspection : IntentionBasedInspection<KtTypeArgumentList>(
+        RemoveExplicitTypeArgumentsIntention::class,
+        cacheIntention = true
+) {
     override fun problemHighlightType(element: KtTypeArgumentList): ProblemHighlightType =
             ProblemHighlightType.LIKE_UNUSED_SYMBOL
 }

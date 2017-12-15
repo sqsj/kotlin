@@ -21,7 +21,10 @@ import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.psi.KtBinaryExpression
 import org.jetbrains.kotlin.psi.KtExpression
 
-class ReplaceSizeCheckWithIsNotEmptyInspection : IntentionBasedInspection<KtBinaryExpression>(ReplaceSizeCheckWithIsNotEmptyIntention::class)
+class ReplaceSizeCheckWithIsNotEmptyInspection : IntentionBasedInspection<KtBinaryExpression>(
+        ReplaceSizeCheckWithIsNotEmptyIntention::class,
+        cacheIntention = true
+)
 
 class ReplaceSizeCheckWithIsNotEmptyIntention : ReplaceSizeCheckIntention("Replace size check with 'isNotEmpty'") {
 

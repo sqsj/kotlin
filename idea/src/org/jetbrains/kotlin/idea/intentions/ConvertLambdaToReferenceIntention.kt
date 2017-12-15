@@ -42,7 +42,10 @@ import org.jetbrains.kotlin.types.isError
 import org.jetbrains.kotlin.types.typeUtil.isTypeParameter
 import org.jetbrains.kotlin.types.typeUtil.isUnit
 
-class ConvertLambdaToReferenceInspection : IntentionBasedInspection<KtLambdaExpression>(ConvertLambdaToReferenceIntention::class)
+class ConvertLambdaToReferenceInspection : IntentionBasedInspection<KtLambdaExpression>(
+        ConvertLambdaToReferenceIntention::class,
+        cacheIntention = true
+)
 
 open class ConvertLambdaToReferenceIntention(text: String) :
         SelfTargetingOffsetIndependentIntention<KtLambdaExpression>(KtLambdaExpression::class.java, text) {

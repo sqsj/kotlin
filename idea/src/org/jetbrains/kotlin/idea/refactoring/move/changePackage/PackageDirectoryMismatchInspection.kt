@@ -23,5 +23,6 @@ class PackageDirectoryMismatchInspection: IntentionBasedInspection<KtPackageDire
         listOf(
                 IntentionBasedInspection.IntentionData(MoveFileToPackageMatchingDirectoryIntention::class),
                 IntentionBasedInspection.IntentionData(ChangePackageToMatchDirectoryIntention::class)),
-        "Package directive doesn't match file location"
+        problemText = "Package directive doesn't match file location",
+        cacheIntention = false // text changed
 )

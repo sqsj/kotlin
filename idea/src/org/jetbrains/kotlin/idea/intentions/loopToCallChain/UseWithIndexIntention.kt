@@ -25,7 +25,10 @@ import org.jetbrains.kotlin.psi.KtForExpression
 import org.jetbrains.kotlin.psi.KtPsiFactory
 import org.jetbrains.kotlin.psi.createExpressionByPattern
 
-class UseWithIndexInspection : IntentionBasedInspection<KtForExpression>(UseWithIndexIntention::class)
+class UseWithIndexInspection : IntentionBasedInspection<KtForExpression>(
+        UseWithIndexIntention::class,
+        cacheIntention = true
+)
 
 class UseWithIndexIntention : SelfTargetingRangeIntention<KtForExpression>(
         KtForExpression::class.java,

@@ -34,7 +34,8 @@ import org.jetbrains.kotlin.util.kind
 
 class ConvertSecondaryConstructorToPrimaryInspection : IntentionBasedInspection<KtSecondaryConstructor>(
         ConvertSecondaryConstructorToPrimaryIntention::class,
-        { constructor -> constructor.containingClass()?.secondaryConstructors?.size == 1 }
+        { constructor -> constructor.containingClass()?.secondaryConstructors?.size == 1 },
+        cacheIntention = true
 ) {
     override fun inspectionTarget(element: KtSecondaryConstructor) = element.getConstructorKeyword()
 }

@@ -32,7 +32,10 @@ import org.jetbrains.kotlin.psi.doNotAnalyze
 import org.jetbrains.kotlin.resolve.BindingContext
 import org.jetbrains.kotlin.resolve.lazy.BodyResolveMode
 
-class ReplaceWithOperatorAssignmentInspection : IntentionBasedInspection<KtBinaryExpression>(ReplaceWithOperatorAssignmentIntention::class)
+class ReplaceWithOperatorAssignmentInspection : IntentionBasedInspection<KtBinaryExpression>(
+        ReplaceWithOperatorAssignmentIntention::class,
+        cacheIntention = false // text changed
+)
 
 class ReplaceWithOperatorAssignmentIntention : SelfTargetingOffsetIndependentIntention<KtBinaryExpression>(KtBinaryExpression::class.java, "Replace with operator-assignment") {
     override fun isApplicableTo(element: KtBinaryExpression): Boolean {

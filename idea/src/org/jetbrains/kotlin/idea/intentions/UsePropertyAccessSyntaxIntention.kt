@@ -66,7 +66,10 @@ import org.jetbrains.kotlin.types.TypeUtils
 import org.jetbrains.kotlin.types.typeUtil.isUnit
 import javax.swing.JComponent
 
-class UsePropertyAccessSyntaxInspection : IntentionBasedInspection<KtCallExpression>(UsePropertyAccessSyntaxIntention::class), CleanupLocalInspectionTool {
+class UsePropertyAccessSyntaxInspection : IntentionBasedInspection<KtCallExpression>(
+        UsePropertyAccessSyntaxIntention::class,
+        cacheIntention = true
+), CleanupLocalInspectionTool {
 
     val fqNameList = mutableListOf<FqNameUnsafe>()
 

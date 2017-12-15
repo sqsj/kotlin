@@ -36,7 +36,10 @@ import org.jetbrains.kotlin.resolve.calls.callUtil.getResolvedCall
 import org.jetbrains.kotlin.resolve.lazy.BodyResolveMode
 import org.jetbrains.kotlin.types.expressions.DoubleColonLHS
 
-class ConvertReferenceToLambdaInspection : IntentionBasedInspection<KtCallableReferenceExpression>(ConvertReferenceToLambdaIntention::class)
+class ConvertReferenceToLambdaInspection : IntentionBasedInspection<KtCallableReferenceExpression>(
+        ConvertReferenceToLambdaIntention::class,
+        cacheIntention = true
+)
 
 class ConvertReferenceToLambdaIntention : SelfTargetingOffsetIndependentIntention<KtCallableReferenceExpression>(
         KtCallableReferenceExpression::class.java, "Convert reference to lambda"

@@ -21,7 +21,10 @@ import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.psi.KtBinaryExpression
 import org.jetbrains.kotlin.psi.KtExpression
 
-class ReplaceSizeZeroCheckWithIsEmptyInspection : IntentionBasedInspection<KtBinaryExpression>(ReplaceSizeZeroCheckWithIsEmptyIntention::class)
+class ReplaceSizeZeroCheckWithIsEmptyInspection : IntentionBasedInspection<KtBinaryExpression>(
+        ReplaceSizeZeroCheckWithIsEmptyIntention::class,
+        cacheIntention = true
+)
 
 class ReplaceSizeZeroCheckWithIsEmptyIntention : ReplaceSizeCheckIntention("Replace size zero check with 'isEmpty'") {
 

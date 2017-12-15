@@ -28,8 +28,10 @@ import org.jetbrains.kotlin.psi.psiUtil.endOffset
 import org.jetbrains.kotlin.psi.psiUtil.getNextSiblingIgnoringWhitespaceAndComments
 import org.jetbrains.kotlin.psi.psiUtil.getStrictParentOfType
 
-class RemoveEmptyClassBodyInspection :
-        IntentionBasedInspection<KtClassBody>(RemoveEmptyClassBodyIntention::class), CleanupLocalInspectionTool {
+class RemoveEmptyClassBodyInspection : IntentionBasedInspection<KtClassBody>(
+        RemoveEmptyClassBodyIntention::class,
+        cacheIntention = true
+), CleanupLocalInspectionTool {
     override fun problemHighlightType(element: KtClassBody): ProblemHighlightType =
             ProblemHighlightType.LIKE_UNUSED_SYMBOL
 }

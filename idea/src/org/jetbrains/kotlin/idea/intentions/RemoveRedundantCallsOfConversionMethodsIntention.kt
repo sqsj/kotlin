@@ -29,7 +29,8 @@ import org.jetbrains.kotlin.resolve.calls.callUtil.getType
 import org.jetbrains.kotlin.types.isFlexible
 
 class RemoveRedundantCallsOfConversionMethodsInspection : IntentionBasedInspection<KtQualifiedExpression>(
-        RemoveRedundantCallsOfConversionMethodsIntention::class
+        RemoveRedundantCallsOfConversionMethodsIntention::class,
+        cacheIntention = true
 ) {
     override fun problemHighlightType(element: KtQualifiedExpression) = ProblemHighlightType.LIKE_UNUSED_SYMBOL
 }

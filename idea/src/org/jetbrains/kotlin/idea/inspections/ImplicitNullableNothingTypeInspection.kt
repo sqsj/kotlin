@@ -29,7 +29,8 @@ class ImplicitNullableNothingTypeInspection : IntentionBasedInspection<KtCallabl
             (declaration.getModalityFromDescriptor() == KtTokens.OPEN_KEYWORD ||
              declaration is KtProperty && declaration.isVar)
         },
-        problemText = "Implicit `Nothing?` type"
+        problemText = "Implicit `Nothing?` type",
+        cacheIntention = true
 ) {
     override fun inspectionTarget(element: KtCallableDeclaration) = element.nameIdentifier
 }

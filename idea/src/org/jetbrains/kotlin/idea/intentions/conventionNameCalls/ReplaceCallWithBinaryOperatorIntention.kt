@@ -44,7 +44,8 @@ class ReplaceCallWithComparisonInspection : IntentionBasedInspection<KtDotQualif
             val calleeExpression = qualifiedExpression.callExpression?.calleeExpression as? KtSimpleNameExpression
             val identifier = calleeExpression?.getReferencedNameAsName()
             identifier == OperatorNameConventions.EQUALS || identifier == OperatorNameConventions.COMPARE_TO
-        }
+        },
+        cacheIntention = false // text changed
 )
 
 class ReplaceCallWithBinaryOperatorIntention : SelfTargetingRangeIntention<KtDotQualifiedExpression>(

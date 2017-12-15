@@ -33,7 +33,8 @@ import org.jetbrains.kotlin.resolve.lazy.BodyResolveMode
 
 class RemoveForLoopIndicesInspection : IntentionBasedInspection<KtForExpression>(
         RemoveForLoopIndicesIntention::class,
-        "Index is not used in the loop body"
+        problemText = "Index is not used in the loop body",
+        cacheIntention = true
 ) {
     override fun problemHighlightType(element: KtForExpression): ProblemHighlightType = ProblemHighlightType.LIKE_UNUSED_SYMBOL
 }

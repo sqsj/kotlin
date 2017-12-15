@@ -26,7 +26,9 @@ import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtValueArgumentList
 
 class RemoveEmptyParenthesesFromLambdaCallInspection : IntentionBasedInspection<KtValueArgumentList>(
-        RemoveEmptyParenthesesFromLambdaCallIntention::class), CleanupLocalInspectionTool {
+        RemoveEmptyParenthesesFromLambdaCallIntention::class,
+        cacheIntention = true
+), CleanupLocalInspectionTool {
     override fun problemHighlightType(element: KtValueArgumentList): ProblemHighlightType =
             ProblemHighlightType.LIKE_UNUSED_SYMBOL
 }

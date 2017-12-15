@@ -36,7 +36,10 @@ import org.jetbrains.kotlin.resolve.calls.model.isReallySuccess
 import org.jetbrains.kotlin.resolve.lazy.BodyResolveMode
 import org.jetbrains.kotlin.utils.addToStdlib.firstIsInstanceOrNull
 
-class SimplifyAssertNotNullInspection : IntentionBasedInspection<KtCallExpression>(SimplifyAssertNotNullIntention::class)
+class SimplifyAssertNotNullInspection : IntentionBasedInspection<KtCallExpression>(
+        SimplifyAssertNotNullIntention::class,
+        cacheIntention = false // text changed
+)
 
 class SimplifyAssertNotNullIntention : SelfTargetingOffsetIndependentIntention<KtCallExpression>(
         KtCallExpression::class.java,

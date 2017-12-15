@@ -24,7 +24,8 @@ import org.jetbrains.kotlin.psi.KtBlockExpression
 import org.jetbrains.kotlin.psi.KtSecondaryConstructor
 
 class RemoveEmptySecondaryConstructorBodyInspection : IntentionBasedInspection<KtBlockExpression>(
-        RemoveEmptySecondaryConstructorBodyIntention::class
+        RemoveEmptySecondaryConstructorBodyIntention::class,
+        cacheIntention = true
 ), CleanupLocalInspectionTool {
     override fun problemHighlightType(element: KtBlockExpression): ProblemHighlightType =
             ProblemHighlightType.LIKE_UNUSED_SYMBOL

@@ -37,7 +37,8 @@ import org.jetbrains.kotlin.types.TypeUtils
 
 class JoinDeclarationAndAssignmentInspection : IntentionBasedInspection<KtProperty>(
         JoinDeclarationAndAssignmentIntention::class,
-        "Can be joined with assignment"
+        problemText = "Can be joined with assignment",
+        cacheIntention = true
 )
 
 class JoinDeclarationAndAssignmentIntention : SelfTargetingOffsetIndependentIntention<KtProperty>(

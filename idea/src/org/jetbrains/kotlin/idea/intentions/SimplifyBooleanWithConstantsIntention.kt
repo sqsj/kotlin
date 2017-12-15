@@ -33,7 +33,10 @@ import org.jetbrains.kotlin.resolve.calls.callUtil.getType
 import org.jetbrains.kotlin.resolve.descriptorUtil.fqNameOrNull
 import org.jetbrains.kotlin.types.isFlexible
 
-class SimplifyBooleanWithConstantsInspection : IntentionBasedInspection<KtBinaryExpression>(SimplifyBooleanWithConstantsIntention::class)
+class SimplifyBooleanWithConstantsInspection : IntentionBasedInspection<KtBinaryExpression>(
+        SimplifyBooleanWithConstantsIntention::class,
+        cacheIntention = true
+)
 
 class SimplifyBooleanWithConstantsIntention : SelfTargetingOffsetIndependentIntention<KtBinaryExpression>(KtBinaryExpression::class.java, "Simplify boolean expression") {
 

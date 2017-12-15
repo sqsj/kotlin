@@ -35,6 +35,7 @@ import org.jetbrains.kotlin.idea.intentions.SelfTargetingRangeIntention
 import org.jetbrains.kotlin.psi.psiUtil.endOffset
 import org.jetbrains.kotlin.psi.psiUtil.getStartOffsetIn
 import org.jetbrains.kotlin.psi.psiUtil.startOffset
+import java.util.concurrent.ConcurrentHashMap
 import kotlin.reflect.KClass
 
 // This class was originally created to make possible switching inspection off and using intention instead.
@@ -42,28 +43,35 @@ import kotlin.reflect.KClass
 // thus making the original purpose useless.
 // The class still can be used, if you want to create a pair for existing intention with additional checker
 abstract class IntentionBasedInspection<TElement : PsiElement>(
-        private val intentionInfos: List<IntentionBasedInspection.IntentionData<TElement>>,
-        protected open val problemText: String?
+        private val intentionInfos: List<IntentionData<TElement>>,
+        protected open val problemText: String?,
+        private val cacheIntention: Boolean
 ) : AbstractKotlinInspection() {
+
+    private val intentionMap: MutableMap<KClass<out SelfTargetingRangeIntention<TElement>>, SelfTargetingRangeIntention<TElement>> =
+            ConcurrentHashMap()
 
     @Suppress("DEPRECATION")
     @Deprecated("Please do not use for new inspections. Use AbstractKotlinInspection as base class for them")
     constructor(
             intention: KClass<out SelfTargetingRangeIntention<TElement>>,
-            problemText: String? = null
-    ) : this(listOf(IntentionData(intention)), problemText)
+            problemText: String? = null,
+            cacheIntention: Boolean
+    ) : this(listOf(IntentionData(intention)), problemText, cacheIntention)
 
     constructor(
             intention: KClass<out SelfTargetingRangeIntention<TElement>>,
             additionalChecker: (TElement, IntentionBasedInspection<TElement>) -> Boolean,
-            problemText: String? = null
-    ) : this(listOf(IntentionData(intention, additionalChecker)), problemText)
+            problemText: String? = null,
+            cacheIntention: Boolean
+    ) : this(listOf(IntentionData(intention, additionalChecker)), problemText, cacheIntention)
 
     constructor(
             intention: KClass<out SelfTargetingRangeIntention<TElement>>,
             additionalChecker: (TElement) -> Boolean,
-            problemText: String? = null
-    ) : this(listOf(IntentionData(intention, { element, _ -> additionalChecker(element) } )), problemText)
+            problemText: String? = null,
+            cacheIntention: Boolean
+    ) : this(listOf(IntentionData(intention, { element, _ -> additionalChecker(element) } )), problemText, cacheIntention)
 
 
 
@@ -84,7 +92,16 @@ abstract class IntentionBasedInspection<TElement : PsiElement>(
     override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean, session: LocalInspectionToolSession): PsiElementVisitor {
 
         val intentionsAndCheckers = intentionInfos.map {
-            val instance = it.intention.constructors.single { it.parameters.isEmpty() } .call()
+            val intentionClass = it.intention
+            val construct = {
+                intentionClass.constructors.single { it.parameters.isEmpty() }.call()
+            }
+            val instance = if (cacheIntention) {
+                intentionMap.getOrPut(intentionClass, construct)
+            }
+            else {
+                construct()
+            }
             instance.inspection = this
             instance to it.additionalChecker
         }

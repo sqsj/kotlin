@@ -21,7 +21,10 @@ import org.jetbrains.kotlin.idea.inspections.IntentionBasedInspection
 import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.psi.psiUtil.anyDescendantOfType
 
-class ReplaceSingleLineLetInspection : IntentionBasedInspection<KtCallExpression>(ReplaceSingleLineLetIntention::class) {
+class ReplaceSingleLineLetInspection : IntentionBasedInspection<KtCallExpression>(
+        ReplaceSingleLineLetIntention::class,
+        cacheIntention = true
+) {
     override fun inspectionTarget(element: KtCallExpression) = element.calleeExpression
 }
 

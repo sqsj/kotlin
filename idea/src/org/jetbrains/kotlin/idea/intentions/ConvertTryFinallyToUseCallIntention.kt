@@ -32,7 +32,10 @@ import org.jetbrains.kotlin.resolve.scopes.receivers.ExpressionReceiver
 import org.jetbrains.kotlin.resolve.scopes.receivers.ImplicitReceiver
 import org.jetbrains.kotlin.types.typeUtil.supertypes
 
-class ConvertTryFinallyToUseCallInspection : IntentionBasedInspection<KtTryExpression>(ConvertTryFinallyToUseCallIntention::class) {
+class ConvertTryFinallyToUseCallInspection : IntentionBasedInspection<KtTryExpression>(
+        ConvertTryFinallyToUseCallIntention::class,
+        cacheIntention = true
+) {
     override fun inspectionTarget(element: KtTryExpression) = element.tryKeyword ?: element.tryBlock
 }
 

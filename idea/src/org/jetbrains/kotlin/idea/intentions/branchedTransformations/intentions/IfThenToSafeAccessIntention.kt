@@ -26,7 +26,10 @@ import org.jetbrains.kotlin.idea.util.application.runWriteAction
 import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.resolve.bindingContextUtil.isUsedAsExpression
 
-class IfThenToSafeAccessInspection : IntentionBasedInspection<KtIfExpression>(IfThenToSafeAccessIntention::class) {
+class IfThenToSafeAccessInspection : IntentionBasedInspection<KtIfExpression>(
+        IfThenToSafeAccessIntention::class,
+        cacheIntention = false // text changed
+) {
     override fun inspectionTarget(element: KtIfExpression) = element.ifKeyword
 
     override fun problemHighlightType(element: KtIfExpression): ProblemHighlightType =
